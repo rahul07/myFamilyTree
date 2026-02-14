@@ -1,6 +1,19 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../supabase'
 
+const DUMMY_DATA = {
+    nodes: [
+        { id: 'dummy-me', name: 'You (Add someone!)', role: 'me', life_status: 'living', type: 'human' },
+        { id: 'dummy-father', name: 'Father (Example)', role: 'parent', life_status: 'living', type: 'human' },
+        { id: 'dummy-mother', name: 'Mother (Example)', role: 'parent', life_status: 'living', type: 'human' }
+    ],
+    links: [
+        { id: 'dummy-l1', source: 'dummy-father', target: 'dummy-me', type: 'parent_child', strength: 1.2 },
+        { id: 'dummy-l2', source: 'dummy-mother', target: 'dummy-me', type: 'parent_child', strength: 1.2 },
+        { id: 'dummy-l3', source: 'dummy-father', target: 'dummy-mother', type: 'spouse', strength: 1.5 }
+    ]
+}
+
 export function useFamilyData() {
     const [profiles, setProfiles] = useState([])
     const [relationships, setRelationships] = useState([])
@@ -108,10 +121,10 @@ export function useFamilyData() {
     }
 
     // Helper to construct graph data (nodes and links)
-    const graphData = {
+    const graphData = profiles.length > 0 ? {
         nodes: profiles.map(p => ({ ...p, id: p.id })), // Ensure shallow copy for D3
         links: relationships.map(r => ({ ...r, source: r.source_id, target: r.target_id }))
-    }
+    } : DUMMY_DATA
 
     return { profiles, relationships, graphData, loading, error, addProfile }
 }
