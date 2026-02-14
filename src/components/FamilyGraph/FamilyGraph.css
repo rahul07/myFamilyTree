@@ -1,0 +1,32 @@
+.family-graph {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    cursor: grab;
+}
+
+.family-graph:active {
+    cursor: grabbing;
+}
+
+.family-graph text {
+    font-family: var(--font-sans);
+    pointer-events: none;
+}
+
+.nodes circle {
+    transition: r 0.3s ease, stroke-width 0.3s ease;
+}
+
+.nodes:hover circle {
+    stroke-width: 4px;
+    filter: drop-shadow(0 0 8px var(--color-accent-primary));
+}
+
+.links path {
+    transition: opacity 0.3s ease;
+}
+
+.links:hover path {
+    opacity: 1;
+}

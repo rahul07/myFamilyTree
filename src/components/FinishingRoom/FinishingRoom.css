@@ -1,0 +1,114 @@
+.finishing-room-ui {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 200;
+    pointer-events: none;
+}
+
+.frame-preview-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+/* Frame Styles */
+.frame-vintage {
+    border: 50px solid transparent;
+    border-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png') 30 stretch;
+    box-shadow: inset 0 0 100px rgba(60, 40, 0, 0.7);
+}
+
+.frame-modern {
+    border: 20px solid var(--color-bg-surface);
+    box-shadow: inset 0 0 0 5px var(--color-gold);
+}
+
+.frame-floral {
+    border: 30px solid pink;
+    border-image: linear-gradient(to bottom right, #ff9a9e 0%, #fecfef 99%, #fecfef 100%) 1;
+}
+
+.frame-neon {
+    box-shadow: inset 0 0 20px var(--color-accent-primary), inset 0 0 40px var(--color-accent-secondary);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Controls */
+.finishing-controls {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1.5rem;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 320px;
+    max-width: 90vw;
+}
+
+.finishing-controls h3 {
+    margin: 0;
+    text-align: center;
+    color: var(--color-gold);
+    font-family: var(--font-serif);
+}
+
+.frame-selector label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-secondary);
+}
+
+.frames-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 0.5rem;
+}
+
+.frames-grid button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.frames-grid button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.frames-grid button.active {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+    background: rgba(251, 191, 36, 0.1);
+}
+
+.finishing-close-btn {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    pointer-events: auto;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--color-border);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    border-radius: var(--radius-full);
+    backdrop-filter: blur(4px);
+    z-index: 300;
+}
+
+.finishing-close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
