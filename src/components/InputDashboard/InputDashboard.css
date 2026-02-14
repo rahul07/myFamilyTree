@@ -91,3 +91,45 @@ select:focus {
     display: flex;
     justify-content: flex-end;
 }
+
+.photo-preview {
+    position: relative;
+    margin-top: 1rem;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 1;
+}
+
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 2px solid var(--color-accent-primary);
+    border-radius: var(--radius-sm);
+}
+
+.photo-preview .remove-photo {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: rgba(239, 68, 68, 0.9);
+    border: none;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.photo-preview .remove-photo:hover {
+    background: rgba(220, 38, 38, 1);
+    transform: scale(1.1);
+}

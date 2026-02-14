@@ -112,3 +112,40 @@
 .finishing-close-btn:hover {
     background: rgba(255, 255, 255, 0.1);
 }
+
+.export-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.export-progress-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.export-progress-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+}
+
+.export-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-secondary));
+    border-radius: 999px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px var(--color-accent-primary);
+}
+
+.export-progress-text {
+    font-size: 0.875rem;
+    color: var(--color-accent-primary);
+    font-weight: 600;
+    min-width: 45px;
+}

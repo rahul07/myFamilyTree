@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../supabase'
 import Button from '../UI/Button'
+import { useToast } from '../UI/ToastContainer'
 import './InputDashboard.css'
 import { v4 as uuidv4 } from 'uuid'
 
 const InputDashboard = ({ onAddProfile }) => {
+    const { showToast } = useToast()
     const [isOpen, setIsOpen] = useState(false)
     const [existingProfiles, setExistingProfiles] = useState([])
+    const [photoPreview, setPhotoPreview] = useState(null)
     const [formData, setFormData] = useState({
         name: '',
         age: '',
@@ -52,9 +55,18 @@ const InputDashboard = ({ onAddProfile }) => {
                 .getPublicUrl(filePath)
 
             setFormData(prev => ({ ...prev, photo_url: publicUrl }))
+
+            // Create preview
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setPhotoPreview(reader.result)
+            }
+            reader.readAsDataURL(file)
+
+            showToast('Photo uploaded successfully!', 'success')
         } catch (error) {
             console.error('Error uploading image: ', error)
-            alert('Error uploading image!')
+            showToast('Error uploading photo. Please try again.', 'error')
         } finally {
             setUploading(false)
         }
@@ -77,6 +89,8 @@ const InputDashboard = ({ onAddProfile }) => {
                 type: formData.role
             })
 
+            showToast(`${formData.name} added successfully!`, 'success')
+
             // Reset form
             setFormData({
                 name: '',
@@ -87,16 +101,10 @@ const InputDashboard = ({ onAddProfile }) => {
                 photo_url: '',
                 relatedTo: '' // Reset
             })
+            setPhotoPreview(null)
             setIsOpen(false)
-
-            // Force immediate visual update by reloading window if state update is too singular
-            // Since useFamilyData uses subscriptions, it SHOULD be automatic, but user complained.
-            // Let's force a reload to be 100% sure they see the new state.
-            // A smoother way is to just let the subscription handle it, but if it lags, reload.
-            // Given the user request "refresh the page", we will oblige.
-            window.location.reload()
         } catch (error) {
-            alert('Error adding profile!')
+            showToast('Error adding family member. Please try again.', 'error')
             console.error(error)
         }
     }
@@ -189,6 +197,21 @@ const InputDashboard = ({ onAddProfile }) => {
                         disabled={uploading}
                     />
                     {uploading && <span className="upload-status">Uploading...</span>}
+                    {photoPreview && (
+                        <div className="photo-preview">
+                            <img src={photoPreview} alt="Preview" />
+                            <button
+                                type="button"
+                                className="remove-photo"
+                                onClick={() => {
+                                    setPhotoPreview(null)
+                                    setFormData(prev => ({ ...prev, photo_url: '' }))
+                                }}
+                            >
+                                ×
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="form-actions">

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { useFamilyData } from './hooks/useFamilyData'
 import FamilyGraph from './components/FamilyGraph/FamilyGraph'
@@ -12,16 +12,31 @@ function App() {
   const [viewMode, setViewMode] = useState('graph') // 'graph' or 'list'
   const [isFinishing, setIsFinishing] = useState(false)
 
-  // New State for Graph Customization
-  const [viewSettings, setViewSettings] = useState({
-    layout: 'tree',
-    linkStyle: 'curved',
-    theme: 'midnight',
-    nodeShape: 'circle',
-    particles: false
+  // Load saved settings from localStorage or use defaults
+  const [viewSettings, setViewSettings] = useState(() => {
+    const saved = localStorage.getItem('familyTreeSettings')
+    return saved ? JSON.parse(saved) : {
+      layout: 'tree',
+      linkStyle: 'curved',
+      theme: 'midnight',
+      nodeShape: 'circle',
+      particles: false
+    }
   })
 
-  const [title, setTitle] = useState("My Family Tree")
+  // Save settings to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('familyTreeSettings', JSON.stringify(viewSettings))
+  }, [viewSettings])
+
+  const [title, setTitle] = useState(() => {
+    return localStorage.getItem('familyTreeTitle') || "My Family Tree"
+  })
+
+  useEffect(() => {
+    localStorage.setItem('familyTreeTitle', title)
+  }, [title])
+
   const [isEditingTitle, setIsEditingTitle] = useState(false)
 
   if (loading) return <div className="loading-screen">Loading Family Tree...</div>

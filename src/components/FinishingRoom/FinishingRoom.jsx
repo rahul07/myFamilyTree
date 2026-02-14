@@ -2,15 +2,19 @@ import React, { useState } from 'react'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import Button from '../UI/Button'
+import { useToast } from '../UI/ToastContainer'
 import './FinishingRoom.css'
 
 const FinishingRoom = ({ onClose }) => {
+    const { showToast } = useToast()
     const [frame, setFrame] = useState('none')
     const [exporting, setExporting] = useState(false)
+    const [exportProgress, setExportProgress] = useState(0)
 
     const handleExport = async (format) => {
         setExporting(true)
-        // Target the main container but exclude UI controls manually via temporary CSS classes or DOM manipulation
+        setExportProgress(10)
+
         const exportTarget = document.querySelector('.app-container')
 
         // Hide controls
@@ -25,20 +29,24 @@ const FinishingRoom = ({ onClose }) => {
         })
 
         try {
+            setExportProgress(25)
             // Add frame class to target
             exportTarget.classList.add(`frame-${frame}`)
 
+            setExportProgress(40)
             const canvas = await html2canvas(exportTarget, {
                 backgroundColor: '#0f172a',
                 scale: 2,
-                useCORS: true // Important for images
+                useCORS: true
             })
 
+            setExportProgress(70)
             if (format === 'png') {
                 const link = document.createElement('a')
                 link.download = `aura-family-tree-${Date.now()}.png`
                 link.href = canvas.toDataURL()
                 link.click()
+                showToast('PNG exported successfully!', 'success')
             } else if (format === 'pdf') {
                 const pdf = new jsPDF({
                     orientation: 'landscape',
@@ -47,10 +55,12 @@ const FinishingRoom = ({ onClose }) => {
                 })
                 pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height)
                 pdf.save(`aura-family-tree-${Date.now()}.pdf`)
+                showToast('PDF exported successfully!', 'success')
             }
+            setExportProgress(100)
         } catch (err) {
             console.error('Export failed:', err)
-            alert('Export failed')
+            showToast('Export failed. Please try again.', 'error')
         } finally {
             // Restore controls
             hiddenElements.forEach(({ el, originalDisplay }) => {
@@ -58,6 +68,7 @@ const FinishingRoom = ({ onClose }) => {
             })
             exportTarget.classList.remove(`frame-${frame}`)
             setExporting(false)
+            setExportProgress(0)
         }
     }
 
@@ -87,6 +98,17 @@ const FinishingRoom = ({ onClose }) => {
                 </div>
 
                 <div className="export-actions">
+                    {exporting && exportProgress > 0 && (
+                        <div className="export-progress-container">
+                            <div className="export-progress-bar">
+                                <div
+                                    className="export-progress-fill"
+                                    style={{ width: `${exportProgress}%` }}
+                                />
+                            </div>
+                            <span className="export-progress-text">{exportProgress}%</span>
+                        </div>
+                    )}
                     <Button onClick={() => handleExport('png')} disabled={exporting}>
                         {exporting ? 'Exporting...' : 'Download PNG'}
                     </Button>

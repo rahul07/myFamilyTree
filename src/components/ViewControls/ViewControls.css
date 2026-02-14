@@ -10,6 +10,41 @@
     flex-direction: column;
     gap: 1.5rem;
     animation: slideInLeft 0.5s ease-out;
+    transition: all 0.3s ease;
+}
+
+.view-controls.collapsed {
+    width: auto;
+    padding: 0;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+}
+
+.toggle-controls-btn {
+    background: var(--color-accent-primary);
+    border: none;
+    color: white;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.toggle-controls-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.view-controls.collapsed .toggle-controls-btn {
+    background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
 }
 
 @keyframes slideInLeft {
