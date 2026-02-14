@@ -1,4 +1,8 @@
-# React + Vite
+# My Family Tree
+
+Create and print your own family tree!
+
+## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
